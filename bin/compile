@@ -163,6 +163,8 @@ fi
 unset GIT_DIR # unset git dir or it will mess with goinstall
 cd $p
 
+go install "${FLAGS[@]}"
+
 rm -rf $build/.heroku
 
 mkdir -p $build/.profile.d
