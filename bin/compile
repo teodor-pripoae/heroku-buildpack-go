@@ -132,27 +132,6 @@ GOPATH=$build/.heroku/go export GOPATH
 PATH=$GOROOT/bin:$PATH
 
 
-if ! (test -d $build/Godeps || (which hg >/dev/null && which bzr >/dev/null))
-then
-    echo
-    echo "       Tired of waiting for bzr and hg?"
-    echo "       Use github.com/tools/godep for faster deploys."
-    echo
-
-    start "Installing Virtualenv"
-        virtualenv --python $python --distribute --never-download --prompt='(venv) ' $venv > /dev/null 2>&1
-        . $venv/bin/activate > /dev/null 2>&1
-    finished
-
-    start "Installing Mercurial"
-        pip install mercurial > /dev/null 2>&1
-    finished
-
-    start "Installing Bazaar"
-        pip install bzr > /dev/null 2>&1
-    finished
-fi
-
 p=$GOPATH/src/$name
 mkdir -p $p
 cp -R $build/* $p
@@ -183,14 +162,6 @@ fi
 
 unset GIT_DIR # unset git dir or it will mess with goinstall
 cd $p
-if test -e $build/Godeps
-then
-    step "Running: godep go install ${FLAGS[@]} ./..."
-    godep go install "${FLAGS[@]}" ./...
-else
-    step "Running: go get ${FLAGS[@]} ./..."
-    go get "${FLAGS[@]}" ./...
-fi
 
 rm -rf $build/.heroku
 
