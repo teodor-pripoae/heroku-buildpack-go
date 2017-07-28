@@ -170,3 +170,7 @@ rm -rf $build/.heroku
 mkdir -p $build/.profile.d
 echo 'PATH=$PATH:$HOME/bin' > $build/.profile.d/go.sh
 cp $buildpack/vendor/concurrency.sh $build/.profile.d/
+
+# inject commit hash in buildpack
+echo "export COMMIT_HASH=$COMMIT_HASH" > $build/.profile.d/commit_hash.sh
+chmod u+x $build/.profile.d/commit_hash.sh
